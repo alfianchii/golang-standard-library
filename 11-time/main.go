@@ -26,4 +26,12 @@ func main() {
 	fmt.Println(valueTime.Month())
 	fmt.Println(valueTime.Day())
 	fmt.Println(valueTime.Hour())
+	fmt.Println("================================================================================================================")
+
+	var dur1 time.Duration = time.Second * 100
+	var dur2 time.Duration = time.Millisecond * 1000
+	var dur3 time.Duration = dur1 - dur2
+	
+	fmt.Printf("Duration 3: %d\n", dur3)
+	fmt.Println("Duration 3:", dur3)
 }
