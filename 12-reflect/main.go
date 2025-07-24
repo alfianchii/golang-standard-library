@@ -28,6 +28,21 @@ func readField(value any) {
 	}
 }
 
+func isValid(value interface{}) bool {
+	var t reflect.Type = reflect.TypeOf(value)
+	for i := 0; i < t.NumField(); i++ {
+		f := t.Field(i)
+		if f.Tag.Get("required") == "true" {
+			data := reflect.ValueOf(value).Field(i).Interface()
+			if data == "" {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 func main() {
 	var alfian User = User{
 		Name: "Alfian",
@@ -50,4 +65,12 @@ func main() {
 	fmt.Println("----------------")
 	readField(Sample{ Name: "Moe" })
 	fmt.Println("================================================================================================================")
+
+	var galih User = User{
+		Name: "Galih",
+		Address: "",
+		Age: 9999,
+	}
+
+	fmt.Println(isValid(galih))
 }
