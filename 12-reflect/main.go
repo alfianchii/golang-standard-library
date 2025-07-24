@@ -6,13 +6,13 @@ import (
 )
 
 type Sample struct {
-	Name string
+	Name string `required:"true" max:"10"`
 }
 
 type User struct {
-	Name string
-	Address string
-	Age int
+	Name string `required:"true" max:"10"`
+	Address string `required:"true" max:"10"`
+	Age int `required:"true" max:"10"`
 }
 
 func readField(value any) {
@@ -20,8 +20,11 @@ func readField(value any) {
 
 	fmt.Println("Type name:", valueType.Name())
 	for i := 0; i < valueType.NumField(); i++ {
-		var valueField reflect.StructField = valueType.Field(i)
-		fmt.Println(valueField.Name, "w/", valueField.Type, "type.")
+		var field reflect.StructField = valueType.Field(i)
+		var fieldRequiredTagValue string = field.Tag.Get("required")
+		var fieldMaxTagValue string = field.Tag.Get("max")
+		
+		fmt.Println(field.Name, "w/", field.Type, "type and its tags:", fieldRequiredTagValue, fieldMaxTagValue)
 	}
 }
 
@@ -35,7 +38,7 @@ func main() {
 	var alfianFields reflect.StructField = alfianType.Field(0)
 
 	fmt.Println(alfianType, alfianFields)
-	fmt.Println("================================================================================================================")
+	fmt.Println("----------------")
 
 	var taka User = User{
 		Name: "Taka",
@@ -44,6 +47,7 @@ func main() {
 	}
 	readField(taka)
 
-	fmt.Println("================================================================================================================")
+	fmt.Println("----------------")
 	readField(Sample{ Name: "Moe" })
+	fmt.Println("================================================================================================================")
 }
