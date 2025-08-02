@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"io"
 	"os"
 )
 
@@ -30,20 +28,10 @@ func readFile(name string) (string, error) {
 
 	defer file.Close()
 
-	var buffMessage string
-	var buffReader *bufio.Reader = bufio.NewReader(file)
+	var buffMessage []byte = make([]byte, 1024)
+	n, _ := file.Read(buffMessage)
 
-	for {
-		line, _, err := buffReader.ReadLine()
-
-		if err == io.EOF {
-			break
-		}
-
-		buffMessage += string(line) + "\n"
-	}
-
-	return buffMessage, nil
+	return string(buffMessage[:n]), nil
 }
 
 func addTextToFile(name string, message string) error {
