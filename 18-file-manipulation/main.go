@@ -18,6 +18,7 @@ func createLogFile(name string, message string) error {
 
 	defer file.Close()
 	file.WriteString(message)
+
 	return nil
 }
 
@@ -45,9 +46,23 @@ func readFile(name string) (string, error) {
 	return buffMessage, nil
 }
 
+func addTextToFile(name string, message string) error {
+	file, err := os.OpenFile(name, os.O_RDWR|os.O_APPEND, 0666)
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+	file.WriteString(message)
+
+	return nil
+}
+
 func main() {
 	createLogFile("OK", "The program runs smoothly, actually.")
-	result, _ := readFile("OK.log")
 
+	result, _ := readFile("OK.log")
 	fmt.Println(result)
+
+	addTextToFile("OK.log", "\nUpdated!")
 }
